@@ -1,4 +1,6 @@
-# dtr0xx_io
+Example configuration:
+
+```yaml
 substitutions:
   devicename: dt-r008
   upper_devicename: DT-R008
