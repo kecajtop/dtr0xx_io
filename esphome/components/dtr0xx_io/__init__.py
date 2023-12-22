@@ -84,8 +84,13 @@ dtr0xx_io_PIN_SCHEMA = cv.All(
     }
 )
 
+def dtr0xx_io_pin_final_validate(pin_config, parent_config):
+    max_pins = parent_config[CONF_SR_COUNT] * 8
+    if pin_config[CONF_NUMBER] >= max_pins:
+        raise cv.Invalid(f"Pin number must be less than {max_pins}")
 
-@pins.PIN_SCHEMA_REGISTRY.register(CONF_dtr0xx_io, dtr0xx_io_PIN_SCHEMA)
+
+@pins.PIN_SCHEMA_REGISTRY.register(CONF_dtr0xx_io, dtr0xx_io_PIN_SCHEMA, dtr0xx_io_pin_final_validate)
 async def dtr0xx_io_pin_to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_parented(var, config[CONF_dtr0xx_io])
