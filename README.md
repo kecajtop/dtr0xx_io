@@ -1,3 +1,5 @@
+Since a vestion ESPHome 2023.12 additional line of allow_other_uses: true will be requaried with each component gpio
+
 Example configuration:
 
 ```yaml
@@ -102,6 +104,7 @@ binary_sensor:
       dtr0xx_io: dtr0xx_io_hub
       number: 7
       inverted: true
+      allow_other_uses: true
     filters:
       - delayed_on: 10ms
       - delayed_off: 10ms
@@ -116,6 +119,7 @@ binary_sensor:
       dtr0xx_io: dtr0xx_io_hub
       number: 6
       inverted: true
+      allow_other_uses: true
     filters:
       - delayed_on: 10ms
       - delayed_off: 10ms
@@ -130,6 +134,7 @@ binary_sensor:
       dtr0xx_io: dtr0xx_io_hub
       number: 5
       inverted: true
+      allow_other_uses: true
     filters:
       - delayed_on: 10ms
       - delayed_off: 10ms
@@ -144,6 +149,7 @@ binary_sensor:
       dtr0xx_io: dtr0xx_io_hub
       number: 4
       inverted: true
+      allow_other_uses: true
     filters:
       - delayed_on: 10ms
       - delayed_off: 10ms
@@ -158,6 +164,7 @@ binary_sensor:
       dtr0xx_io: dtr0xx_io_hub
       number: 3
       inverted: true
+      allow_other_uses: true
     filters:
       - delayed_on: 10ms
       - delayed_off: 10ms
@@ -172,6 +179,7 @@ binary_sensor:
       dtr0xx_io: dtr0xx_io_hub
       number: 2
       inverted: true
+      allow_other_uses: true
     filters:
       - delayed_on: 10ms
       - delayed_off: 10ms
@@ -186,6 +194,7 @@ binary_sensor:
       dtr0xx_io: dtr0xx_io_hub
       number: 1
       inverted: true
+      allow_other_uses: true
     filters:
       - delayed_on: 10ms
       - delayed_off: 10ms
@@ -200,6 +209,7 @@ binary_sensor:
       dtr0xx_io: dtr0xx_io_hub
       number: 0
       inverted: true
+      allow_other_uses: true
     filters:
       - delayed_on: 10ms
       - delayed_off: 10ms
@@ -216,7 +226,7 @@ switch:
       dtr0xx_io: dtr0xx_io_hub
       number: 7
       inverted: false
-
+      allow_other_uses: true
   - platform: gpio
     name: ${friendly_name} Relay 2
     id: relay_2
@@ -225,7 +235,7 @@ switch:
       dtr0xx_io: dtr0xx_io_hub
       number: 6
       inverted: false
-
+      allow_other_uses: true
   - platform: gpio
     name: ${friendly_name} Relay 3
     id: relay_3
@@ -234,7 +244,7 @@ switch:
       dtr0xx_io: dtr0xx_io_hub
       number: 5
       inverted: false
-
+      allow_other_uses: true
   - platform: gpio
     name: ${friendly_name} Relay 4
     id: relay_4
@@ -243,7 +253,7 @@ switch:
       dtr0xx_io: dtr0xx_io_hub
       number: 4
       inverted: false
-
+      allow_other_uses: true
   - platform: gpio
     name: ${friendly_name} Relay 5
     id: relay_5
@@ -252,7 +262,7 @@ switch:
       dtr0xx_io: dtr0xx_io_hub
       number: 3
       inverted: false
-
+      allow_other_uses: true
   - platform: gpio
     name: ${friendly_name} Relay 6
     id: relay_6
@@ -261,7 +271,7 @@ switch:
       dtr0xx_io: dtr0xx_io_hub
       number: 2
       inverted: false
-
+      allow_other_uses: true
   - platform: gpio
     name: ${friendly_name} Relay 7
     id: relay_7
@@ -272,7 +282,7 @@ switch:
       dtr0xx_io: dtr0xx_io_hub
       number: 1
       inverted: false
-
+      allow_other_uses: true
   - platform: gpio
     name: ${friendly_name} Relay 8
     id: relay_8
@@ -283,3 +293,4 @@ switch:
       dtr0xx_io: dtr0xx_io_hub
       number: 0
       inverted: false
+      allow_other_uses: true
