@@ -10,7 +10,7 @@ from esphome.const import (
     CONF_OUTPUT,
 )
 
-CODEOWNERS = ["@jesserockz"]
+CODEOWNERS = ["@kecaj"]
 DEPENDENCIES = []
 MULTI_CONF = True
 
@@ -68,19 +68,15 @@ def validate_mode(value):
     return value
 
 
-dtr0xx_io_PIN_SCHEMA = cv.All(
+dtr0xx_io_PIN_SCHEMA = pins.gpio_base_schema(
+    dtr0xx_ioGPIOPin,
+    cv.int_range(min=0, max=2047),
+    modes=[CONF_INPUT, CONF_OUTPUT],
+    mode_validator=validate_mode,
+    invertable=True,
+).extend(
     {
-        cv.GenerateID(): cv.declare_id(dtr0xx_ioGPIOPin),
         cv.Required(CONF_dtr0xx_io): cv.use_id(dtr0xx_ioComponent),
-        cv.Required(CONF_NUMBER): cv.int_range(min=0, max=2048, max_included=False),
-        cv.Optional(CONF_MODE, default={}): cv.All(
-            {
-                cv.Optional(CONF_INPUT, default=False): cv.boolean,
-                cv.Optional(CONF_OUTPUT, default=False): cv.boolean,
-            },
-            validate_mode,
-        ),
-        cv.Optional(CONF_INVERTED, default=False): cv.boolean,
     }
 )
 
@@ -88,6 +84,7 @@ def dtr0xx_io_pin_final_validate(pin_config, parent_config):
     max_pins = parent_config[CONF_SR_COUNT] * 8
     if pin_config[CONF_NUMBER] >= max_pins:
         raise cv.Invalid(f"Pin number must be less than {max_pins}")
+    
 
 
 @pins.PIN_SCHEMA_REGISTRY.register(CONF_dtr0xx_io, dtr0xx_io_PIN_SCHEMA, dtr0xx_io_pin_final_validate)
