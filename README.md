@@ -1,4 +1,6 @@
-Since a vestion ESPHome 2023.12 additional line of allow_other_uses: true will be requaried with each component gpio
+Since a version of ESPHome 2023.12 additional line of allow_other_uses: true will be requaried with each component gpio
+
+Problem has been raied with ESPhome team github before https://github.com/esphome/issues/issues/5286
 
 Example configuration:
 
