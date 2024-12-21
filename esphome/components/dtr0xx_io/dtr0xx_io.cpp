@@ -53,8 +53,8 @@ void dtr0xx_ioComponent::digital_write_(uint16_t pin, bool value)
 
 void dtr0xx_ioComponent::read_gpio_() {
 
-  this->dingtian_pl_pin_->digital_write(true);
-  delayMicroseconds(10);
+  //this->dingtian_pl_pin_->digital_write(true);
+  //delayMicroseconds(10);
 
   if (this->dingtian_rck_pin_ != nullptr)
     this->dingtian_rck_pin_->digital_write(false);
@@ -69,10 +69,11 @@ void dtr0xx_ioComponent::read_gpio_() {
       delayMicroseconds(10);
     }
   }
-  this->dingtian_pl_pin_->digital_write(false);
+  //this->dingtian_pl_pin_->digital_write(false);
   //if (this->dingtian_rck_pin_ != nullptr)
     this->dingtian_rck_pin_->digital_write(true);
-    this->dingtian_rck_pin_->digital_write(false);
+    delayMicroseconds(10);
+      this->dingtian_rck_pin_->digital_write(false);
 }
 
 float dtr0xx_ioComponent::get_setup_priority() const { return setup_priority::IO; }
