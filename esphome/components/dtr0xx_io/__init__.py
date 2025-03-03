@@ -94,4 +94,5 @@ async def dtr0xx_io_pin_to_code(config):
 
     cg.add(var.set_pin(config[CONF_NUMBER]))
     cg.add(var.set_inverted(config[CONF_INVERTED]))
+    cg.add(var.set_flags(pins.gpio_flags_expr(config[CONF_MODE])))
     return var

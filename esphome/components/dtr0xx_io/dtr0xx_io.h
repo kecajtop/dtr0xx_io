@@ -61,9 +61,13 @@ class dtr0xx_ioGPIOPin : public GPIOPin, public Parented<dtr0xx_ioComponent> {
   void set_pin(uint16_t pin) { pin_ = pin; }
   void set_inverted(bool inverted) { inverted_ = inverted; }
 
+  void set_flags(gpio::Flags flags) { this->flags_ = flags; }
+  gpio::Flags get_flags() const override { return this->flags_; }
+
  protected:
   uint16_t pin_;
   bool inverted_;
+  gpio::Flags flags_;
 };
 
 }  // namespace dtr0xx_io
