@@ -1,0 +1,360 @@
+substitutions:
+  name: dtr008v2
+  # 3.6.10+ (tested on 3.6.13)
+  friendly_name: "DT-R008 v2"
+
+esphome:
+  name: ${name}
+  friendly_name: ${friendly_name}
+  min_version: 2025.5.1
+  name_add_mac_suffix: false
+  project:
+    name: esphome.web
+    version: '1.0'
+
+esp32:
+  board: esp32dev
+  framework:
+    type: esp-idf
+
+ota:
+  - platform: esphome
+    password: !secret OTA_Password
+
+web_server:
+  port: 80
+  auth:
+    username: !secret web_server_username
+    password: !secret web_server_password
+
+
+# Enable logging, DEBUG by default
+logger:
+  level: WARN
+
+
+# Enable Home Assistant API
+api:
+
+
+# Allow provisioning Wi-Fi via serial
+#improv_serial:
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  manual_ip:
+    static_ip: 192.168.1.99
+    gateway: 192.168.1.1
+    subnet: 255.255.255.0
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  #ap: ${friendly_name} AP
+  #password: !secret AP_Password
+
+# In combination with the `ap` this allows the user
+# to provision wifi credentials to the device via WiFi AP.
+#captive_portal:
+
+#ethernet:
+#  type: JL1101
+#  mdc_pin: GPIO23
+#  mdio_pin: GPIO18
+#  clk_mode: GPIO17_OUT
+#  power_pin: GPIO0
+#  phy_addr: 1
+#  power_pin: GPIO16
+#  manual_ip:
+#    static_ip: 192.168.1.99
+#    gateway: 192.168.1.1
+#    subnet: 255.255.255.0
+
+
+dashboard_import:
+  package_import_url: github://esphome/example-configs/esphome-web/esp32.yaml@main
+  import_full_config: true
+
+external_components:
+  - source: github://prudy/dtr0xx_io@dtr008v2io
+    refresh: 60s
+    components:
+      - dtr008v2io
+
+# Sets up Bluetooth LE (Only on ESP32) to allow the user
+# to provision wifi credentials to the device.
+#esp32_improv:
+#  authorizer: none
+
+#time:
+#  - platform: sntp
+#    id: my_time
+
+#globals:
+
+# Either this or canbus
+#i2c:
+#  sda: GPIO4
+#  scl: GPIO5
+#  scan: true
+#  id: main_i2c
+#  frequency: 400kHz
+
+# Either this or canbus
+#uart:
+#  id: serial_port
+#  tx_pin: GPIO1
+#  rx_pin: GPIO3
+#  baud_rate: 9600
+#  stop_bits: 1
+
+# Half-duplex control for RS485/modbus
+#modbus:
+#  flow_control_pin: GPIO33
+
+# Either this or usrt/i2c
+#canbus:
+#  - platform: esp32_can
+#    tx_pin: GPIO5
+#    rx_pin: GPIO4
+#    can_id: 4
+#    bit_rate: 50kbps
+
+# spi for shift registers GPIO
+spi:
+  - id: dtr008v2io_hub_spi
+    interface: hardware
+    clk_pin: GPIO14
+    mosi_pin: GPIO13
+    miso_pin: GPIO16
+
+dtr008v2io:
+  - id: dtr008v2io_hub
+    oe_pin: GPIO32
+    spi_id: dtr008v2io_hub_spi
+    cs_pin: GPIO15
+
+binary_sensor:
+  - platform: gpio
+    id: input_d1
+    pin:
+      number: GPIO36
+      inverted: true
+    name: ${friendly_name} Direct I1
+  - platform: gpio
+    id: input_d2
+    pin:
+      number: GPIO39
+      inverted: true
+    name: ${friendly_name} Direct I2
+  - platform: gpio
+    id: input_d3
+    pin:
+      number: GPIO35
+      inverted: true
+    name: ${friendly_name} Direct I3
+  - platform: gpio
+    id: input_d4
+    pin:
+      number: GPIO12
+      inverted: true
+    name: ${friendly_name} Direct I4
+
+  - platform: gpio
+    id: input_1
+    name: ${friendly_name} I1
+    pin:
+      dtr008v2io: dtr008v2io_hub
+      number: 0
+      inverted: true
+      allow_other_uses: true
+    filters:
+      - delayed_on: 10ms
+      - delayed_off: 10ms
+    on_press:
+      then:
+        switch.toggle: relay_1
+
+  - platform: gpio
+    id: input_2
+    name: ${friendly_name} I2
+    pin:
+      dtr008v2io: dtr008v2io_hub
+      number: 1
+      inverted: true
+      allow_other_uses: true
+    filters:
+      - delayed_on: 10ms
+      - delayed_off: 10ms
+    on_press:
+      then:
+        switch.toggle: relay_2
+
+  - platform: gpio
+    id: input_3
+    name: ${friendly_name} I3
+    pin:
+      dtr008v2io: dtr008v2io_hub
+      number: 2
+      inverted: true
+      allow_other_uses: true
+    filters:
+      - delayed_on: 10ms
+      - delayed_off: 10ms
+    on_press:
+      then:
+        switch.toggle: relay_3
+
+  - platform: gpio
+    id: input_4
+    name: ${friendly_name} I4
+    pin:
+      dtr008v2io: dtr008v2io_hub
+      number: 3
+      inverted: true
+      allow_other_uses: true
+    filters:
+      - delayed_on: 10ms
+      - delayed_off: 10ms
+    on_press:
+      then:
+        switch.toggle: relay_4
+
+  - platform: gpio
+    id: input_5
+    name: ${friendly_name} I5
+    pin:
+      dtr008v2io: dtr008v2io_hub
+      number: 4
+      inverted: true
+      allow_other_uses: true
+    filters:
+      - delayed_on: 10ms
+      - delayed_off: 10ms
+    on_press:
+      then:
+        switch.toggle: relay_5
+
+  - platform: gpio
+    id: input_6
+    name: ${friendly_name} I6
+    pin:
+      dtr008v2io: dtr008v2io_hub
+      number: 5
+      inverted: true
+      allow_other_uses: true
+    filters:
+      - delayed_on: 10ms
+      - delayed_off: 10ms
+    on_press:
+      then:
+        switch.toggle: relay_6
+
+  - platform: gpio
+    id: input_7
+    name: ${friendly_name} I7
+    pin:
+      dtr008v2io: dtr008v2io_hub
+      number: 6
+      inverted: true
+      allow_other_uses: true
+    filters:
+      - delayed_on: 10ms
+      - delayed_off: 10ms
+    on_press:
+      then:
+        switch.toggle: relay_7
+
+  - platform: gpio
+    id: input_8
+    name: ${friendly_name} I8
+    pin:
+      dtr008v2io: dtr008v2io_hub
+      number: 7
+      inverted: true
+      allow_other_uses: true
+    filters:
+      - delayed_on: 10ms
+      - delayed_off: 10ms
+    on_press:
+      then:
+        switch.toggle: relay_8
+
+switch:
+  - platform: gpio
+    name: ${friendly_name} RELAY1
+    id: relay_1
+    restore_mode: ALWAYS_OFF
+    pin:
+      dtr008v2io: dtr008v2io_hub
+      number: 0
+      inverted: false
+      allow_other_uses: true
+
+  - platform: gpio
+    name: ${friendly_name} RELAY2
+    id: relay_2
+    restore_mode: ALWAYS_OFF
+    pin:
+      dtr008v2io: dtr008v2io_hub
+      number: 1
+      inverted: false
+      allow_other_uses: true
+
+  - platform: gpio
+    name: ${friendly_name} RELAY3
+    id: relay_3
+    restore_mode: ALWAYS_OFF
+    pin:
+      dtr008v2io: dtr008v2io_hub
+      number: 2
+      inverted: false
+      allow_other_uses: true
+
+  - platform: gpio
+    name: ${friendly_name} RELAY4
+    id: relay_4
+    restore_mode: ALWAYS_OFF
+    pin:
+      dtr008v2io: dtr008v2io_hub
+      number: 3
+      inverted: false
+      allow_other_uses: true
+
+  - platform: gpio
+    name: ${friendly_name} RELAY5
+    id: relay_5
+    restore_mode: ALWAYS_OFF
+    pin:
+      dtr008v2io: dtr008v2io_hub
+      number: 4
+      inverted: false
+      allow_other_uses: true
+
+  - platform: gpio
+    name: ${friendly_name} RELAY6
+    id: relay_6
+    restore_mode: ALWAYS_OFF
+    pin:
+      dtr008v2io: dtr008v2io_hub
+      number: 5
+      inverted: false
+      allow_other_uses: true
+
+  - platform: gpio
+    name: ${friendly_name} RELAY7
+    id: relay_7
+    restore_mode: ALWAYS_OFF
+    pin:
+      dtr008v2io: dtr008v2io_hub
+      number: 6
+      inverted: false
+      allow_other_uses: true
+
+  - platform: gpio
+    name: ${friendly_name} RELAY8
+    id: relay_8
+    restore_mode: ALWAYS_OFF
+    pin:
+      dtr008v2io: dtr008v2io_hub
+      number: 7
+      inverted: false
+      allow_other_uses: true
