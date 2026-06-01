@@ -37,13 +37,12 @@ class dtr0xx_ioComponent : public Component {
   bool digital_read_(uint16_t pin);
   void digital_write_(uint16_t pin, bool value);
   void read_gpio_();
-  void write_gpio_();
 
   GPIOPin *dingtian_q7_pin_;
   GPIOPin *dingtian_sdi_pin_;
   GPIOPin *dingtian_clk_pin_;
   GPIOPin *dingtian_pl_pin_;
-  GPIOPin *dingtian_rck_pin_;
+  GPIOPin *dingtian_rck_pin_{nullptr};
   uint8_t sr_count_;
   std::vector<bool> input_bits_;
   std::vector<bool> output_bits_;

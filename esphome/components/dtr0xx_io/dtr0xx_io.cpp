@@ -70,9 +70,10 @@ void dtr0xx_ioComponent::read_gpio_() {
     }
   }
   this->dingtian_pl_pin_->digital_write(false);
-  //if (this->dingtian_rck_pin_ != nullptr)
+  if (this->dingtian_rck_pin_ != nullptr) {
     this->dingtian_rck_pin_->digital_write(true);
     this->dingtian_rck_pin_->digital_write(false);
+  }
 }
 
 float dtr0xx_ioComponent::get_setup_priority() const { return setup_priority::IO; }

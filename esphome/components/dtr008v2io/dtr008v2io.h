@@ -31,10 +31,10 @@ class dtr008v2ioComponent : public Component,
   void digital_write_(uint16_t pin, bool value);
   void transfer_gpio_();
 
-  GPIOPin *oe_pin_;
-  uint8_t input_byte_;
-  uint8_t output_byte_;
-  bool use_inputs_;
+  GPIOPin *oe_pin_{nullptr};
+  uint8_t input_byte_{0};
+  uint8_t output_byte_{0};
+  bool use_inputs_{false};
 };
 
 /// Helper class to expose a SN74HC165/595 pin as an internal GPIO pin.
