@@ -83,7 +83,9 @@ bool dtr0xx_ioGPIOPin::digital_read() {
 void dtr0xx_ioGPIOPin::digital_write(bool value) {
   this->parent_->digital_write_(this->pin_, value != this->inverted_);}
 
-std::string dtr0xx_ioGPIOPin::dump_summary() const { return str_snprintf("%u via dtr0xx_io", 18, pin_); }
+size_t dtr0xx_ioGPIOPin::dump_summary(char *buffer, size_t len) const {
+  return buf_append_printf(buffer, len, 0, "%u via dtr0xx_io", pin_);
+}
 
 }  // namespace dtr0xx_io
 }  // namespace esphome
