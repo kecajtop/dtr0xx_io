@@ -2,6 +2,24 @@ Since a version of ESPHome 2023.12 additional line of allow_other_uses: true wil
 
 Problem has been raied with ESPhome team github before https://github.com/esphome/issues/issues/5286
 
+Fix buzzing issue:
+```
+dtr0xx_io:
+  id: dtr0xx_io_hub
+  use_input: true
+  update_interval: 50ms   # optional, defaults to 100ms
+  ...
+```
+or
+```
+dtr0xx_io:
+  id: dtr0xx_io_hub
+  use_input: false   # set this if you don't wire up any inputs
+  dingtian_sdi_pin: ...
+  dingtian_clk_pin: ...
+  dingtian_rck_pin: ...
+  sr_count: 2
+```
 Example configuration:
 
 ```yaml
