@@ -9,12 +9,12 @@
 namespace esphome {
 namespace dtr0xx_io {
 
-class dtr0xx_ioComponent : public Component {
+class dtr0xx_ioComponent : public PollingComponent {
  public:
   dtr0xx_ioComponent() = default;
 
   void setup() override;
-  void loop() override;
+  void update() override;
   float get_setup_priority() const override;
   void dump_config() override;
 
@@ -27,11 +27,10 @@ class dtr0xx_ioComponent : public Component {
 
   /// Whether this instance actually reads inputs (SN74HC165 side) or only
   /// drives outputs (SN74HC595 side). When false, we never touch the PL
-  /// (SH/LD) pin and never poll in loop() - this is what avoids the relay
-  /// buzz reported for output-only setups.
+  /// (SH/LD) pin and update() becomes a no-op - this is what avoids the
+  /// relay buzz reported for output-only setups. (`update_interval` from
+  /// PollingComponent controls how often we poll when this is true.)
   void set_use_input(bool use_input) { this->use_input_ = use_input; }
-  /// How often (ms) to poll inputs in loop() when use_input is true.
-  void set_update_interval(uint32_t update_interval) { this->update_interval_ = update_interval; }
 
   void set_sr_count(uint8_t count) {
     this->sr_count_ = count;
@@ -53,8 +52,6 @@ class dtr0xx_ioComponent : public Component {
   GPIOPin *dingtian_rck_pin_{nullptr};
   uint8_t sr_count_;
   bool use_input_{true};
-  uint32_t update_interval_{100};
-  uint32_t last_read_{0};
   std::vector<bool> input_bits_;
   std::vector<bool> output_bits_;
 };

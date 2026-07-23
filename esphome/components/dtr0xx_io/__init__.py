@@ -8,7 +8,6 @@ from esphome.const import (
     CONF_INVERTED,
     CONF_INPUT,
     CONF_OUTPUT,
-    CONF_UPDATE_INTERVAL,
 )
 
 CODEOWNERS = ["@kecaj"]
@@ -17,7 +16,7 @@ MULTI_CONF = True
 
 dtr0xx_io_ns = cg.esphome_ns.namespace("dtr0xx_io")
 
-dtr0xx_ioComponent = dtr0xx_io_ns.class_("dtr0xx_ioComponent", cg.Component)
+dtr0xx_ioComponent = dtr0xx_io_ns.class_("dtr0xx_ioComponent", cg.PollingComponent)
 dtr0xx_ioGPIOPin = dtr0xx_io_ns.class_(
     "dtr0xx_ioGPIOPin", cg.GPIOPin, cg.Parented.template(dtr0xx_ioComponent)
 )
@@ -31,7 +30,7 @@ CONF_DINGTIAN_SDI = "dingtian_sdi_pin"
 CONF_DINGTIAN_CLK = "dingtian_clk_pin"
 # Whether this instance reads inputs (SN74HC165 side) at all. Boards that
 # only use outputs can set this to false to avoid the relay buzz caused by
-# needlessly toggling PL / polling every loop iteration - see
+# needlessly toggling PL / polling on a timer - see
 # https://github.com/kecajtop/dtr0xx_io/issues/22
 CONF_USE_INPUT = "use_input"
 
@@ -60,11 +59,10 @@ CONFIG_SCHEMA = cv.All(
             cv.Optional(CONF_DINGTIAN_RCK): pins.gpio_output_pin_schema,
             cv.Optional(CONF_SR_COUNT, default=1): cv.int_range(min=1, max=256),
             cv.Optional(CONF_USE_INPUT, default=True): cv.boolean,
-            cv.Optional(
-                CONF_UPDATE_INTERVAL, default="100ms"
-            ): cv.positive_time_period_milliseconds,
         }
-    ).extend(cv.COMPONENT_SCHEMA),
+        # update_interval is provided by this - only matters while use_input
+        # is true, since update() is a no-op otherwise.
+    ).extend(cv.polling_component_schema("100ms")),
     validate_dtr0xx_io_config,
 )
 
@@ -79,7 +77,6 @@ async def to_code(config):
     cg.add(var.set_dingtian_clk_pin(dingtian_clk_pin))
 
     cg.add(var.set_use_input(config[CONF_USE_INPUT]))
-    cg.add(var.set_update_interval(config[CONF_UPDATE_INTERVAL]))
 
     if CONF_DINGTIAN_Q7 in config:
         dingtian_q7_pin = await cg.gpio_pin_expression(config[CONF_DINGTIAN_Q7])
