@@ -68,7 +68,9 @@ void dtr008v2ioGPIOPin::digital_write(bool value) {
   this->parent_->digital_write_(this->pin_, value != this->inverted_);
 }
 
-std::string dtr008v2ioGPIOPin::dump_summary() const { return str_snprintf("%u via dtr008v2io", 16, pin_); }
+size_t dtr008v2ioGPIOPin::dump_summary(char *buffer, size_t len) const {
+  return buf_append_printf(buffer, len, 0, "%u via dtr008v2io", pin_);
+}
 
 }  // namespace dtr008v2io
 }  // namespace esphome
